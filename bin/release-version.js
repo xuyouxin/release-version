@@ -28,7 +28,9 @@ const packagejson = jsonfile.readFileSync(packagePath);
 const currentVersion = packagejson.version;
 DEBUG('currentVersion: ' + currentVersion);
 
-const prefix = '-' + argv.pre + '.';
+const pre = argv.pre.length > 0 ? argv.pre + '.' : '';
+
+const prefix = '-' + pre;
 VERBOSE('prefix: ' + prefix);
 
 const prefixRegex = new RegExp( '(' +  prefix + ')\\w+', 'g');
