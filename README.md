@@ -32,11 +32,11 @@ given current version 1.0.0 will create version: 1.0.0-rc.2
 ```shell
 release-version -b 2 -p /path/to/project --pre rc
 ```
-version 1.0.0 will result in: 1.0.0+rc.2
+version 1.0.0 will result in: 1.0.0+rc.2 on the package.json located in `/path/to/project`
 
 
 ```shell
-release-version -b 2 -r alpha -p /path/to/project --pre ''
+release-version -r alpha -b 2 --pre ''
 ```
 version 1.0.0 will result in: 1.0.0-alpha+2
 
