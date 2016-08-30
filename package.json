@@ -1,6 +1,6 @@
 {
   "name": "release-version",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Append pre-release build number to version in package.json",
   "main": "index.js",
   "preferGlobal": true,
