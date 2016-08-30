@@ -24,19 +24,19 @@ Once the package has been globally installed it may be used from from any path
 
 
 ```shell
-release-version -b 2
+release-version -r rc.2
 ```
-given current version 1.0.0 will create version: 1.0.0+rc.2
+given current version 1.0.0 will create version: 1.0.0-rc.2
 
 
 ```shell
-release-version -b 2 -p /path/to/project -pre build
+release-version -b 2 -p /path/to/project --pre rc
 ```
-version 1.0.0 will result in: 1.0.0+build.2
+version 1.0.0 will result in: 1.0.0+rc.2
 
 
 ```shell
-release-version -b 2 -r alpha -p /path/to/project -pre ''
+release-version -b 2 -r alpha -p /path/to/project --pre ''
 ```
 version 1.0.0 will result in: 1.0.0-alpha+2
 
