@@ -30,6 +30,7 @@
   "homepage": "https://github.com/mirchow/release-version#readme",
   "dependencies": {
     "jsonfile": "^2.3.1",
+    "semver-utils": "^1.1.1",
     "yargs": "^5.0.0"
   }
 }

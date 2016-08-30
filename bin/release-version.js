@@ -1,19 +1,22 @@
 #!/usr/bin/env node
 
+const semverUtils = require('semver-utils');
 const jsonfile = require('jsonfile');
 jsonfile.spaces = 2;
 const argv = require('yargs')
   .usage('Usage: $0 [-b "buildNumber"]')
   .required('b', 'Build number is required')
+  .option('r', { alias: 'release', demand: false, default: '', describe: 'override pre-release version'})
   .option('b', { alias: 'buildNumber', describe: 'Build Number', type: 'string'})
+  .option('pre', { alias: 'prefix', demand: false, default: 'rc', describe: 'override build prefix'})
   .option('p', { alias: 'path', demand: false, default: '.', describe: 'Path to package.json', type: 'string'})
-  .option('pre', { alias: 'prefix', demand: false, default: 'rc', describe: 'override pre-release prefix'})
   .option('v', { alias: 'verbose', demand: false, describe: 'logs more info', type: 'string'})
   .count('verbose')
   .help('?')
   .alias('?', 'help')
-  .example('$0 -b 12', 'creates 1.0.0-rc.12')
-  .example('$0 -b 12 -p /path/to/project --pre build', 'creates 1.0.0-build.12')
+  .example('$0 -b 12', 'creates 1.0.0+rc.12')
+  .example('$0 -b 12 -r dev --pre \'\'', 'creates 1.0.0-dev+12')
+  .example('$0 -b 12 -p /path/to/project --pre build', 'creates 1.0.0+build.12')
   .argv;
 
 const VERBOSE_LEVEL = argv.verbose;
@@ -28,25 +31,28 @@ const packagejson = jsonfile.readFileSync(packagePath);
 const currentVersion = packagejson.version;
 DEBUG('currentVersion: ' + currentVersion);
 
-const pre = argv.pre.length > 0 ? argv.pre + '.' : '';
+const parsedVersion = semverUtils.parse(currentVersion);
+DEBUG('parsedVersion: ' + parsedVersion);
 
-const prefix = '-' + pre;
-VERBOSE('prefix: ' + prefix);
+const release = argv.r;
+if(release.length) {
+  VERBOSE('release: ' + release);
+}
 
-const prefixRegex = new RegExp( '(' +  prefix + ')\\w+', 'g');
-VERBOSE('prefixRegex: ' + prefixRegex);
+const prefix = argv.pre.length > 0 ? argv.pre + '.' : '';
+VERBOSE('build prefix: ' + prefix);
 
 const buildNumber = argv.b;
 DEBUG('Updating with Build Number: ' + buildNumber);
-var newPackageVersion = currentVersion;
-VERBOSE('newPackageVersion: ' + newPackageVersion);
 
-if (!currentVersion.match(prefixRegex)) {
-  newPackageVersion = currentVersion + prefix + buildNumber;
-} else {
-  const semverRegex = /(\d+)(?!.*\d)/;
-  newPackageVersion = currentVersion.replace(semverRegex, buildNumber);
-}
+var newPackageVersion = semverUtils.stringify({
+  major: parsedVersion.major,
+  minor: parsedVersion.minor,
+  patch: parsedVersion.patch,
+  release: release,
+  build: prefix + buildNumber
+});
+VERBOSE('newPackageVersion: ' + newPackageVersion);
 
 packagejson.version = newPackageVersion;
 
