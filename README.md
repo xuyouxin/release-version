@@ -29,7 +29,7 @@ given current version 1.0.0 will create version: 1.0.0-rc.2
 
 
 ```shell
-release-version -r '' --pre '' -b build.420 -p /path/to/project
+release-version -b build.420 -p /path/to/project
 ```
 version 1.0.0 will result in: 1.0.0+build.420 on the package.json located in `/path/to/project`
 
