@@ -22,21 +22,26 @@ npm install -g release-version
 Once the package has been globally installed it may be used from from any path
 
 
-
 ```shell
-release-version -r rc.2
+release-version -r 2
 ```
 given current version 1.0.0 will create version: 1.0.0-rc.2
 
 
 ```shell
-release-version -b 2 -p /path/to/project --pre rc
+release-version -r '' --pre '' -b build.420 -p /path/to/project
 ```
-version 1.0.0 will result in: 1.0.0+rc.2 on the package.json located in `/path/to/project`
+version 1.0.0 will result in: 1.0.0+build.420 on the package.json located in `/path/to/project`
 
 
 ```shell
 release-version -r alpha -b 2 --pre ''
 ```
 version 1.0.0 will result in: 1.0.0-alpha+2
+
+
+```shell
+release-version -r beta --pre ''
+```
+version 1.0.0 will result in: 1.0.0-beta
 
