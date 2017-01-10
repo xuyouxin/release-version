@@ -10,6 +10,7 @@ const argv = require('yargs')
   .option('b', { alias: 'build', demand: false, default: '', describe: 'Build meta data', type: 'string'})
   .option('p', { alias: 'path', demand: false, default: '.', describe: 'Path to package.json', type: 'string'})
   .option('v', { alias: 'verbose', demand: false, describe: 'logs more info', type: 'string'})
+  .option('i', { alias: 'info', demand: false, describe: 'show current version', type: 'bool'})
   .count('verbose')
   .help('?')
   .alias('?', 'help')
@@ -30,6 +31,11 @@ DEBUG('packagePath: %s', packagePath);
 const packagejson = jsonfile.readFileSync(packagePath);
 const currentVersion = packagejson.version;
 DEBUG('currentVersion: %s', currentVersion);
+
+if (argv.i) {
+  INFO(currentVersion);
+  return;
+}
 
 const parsedVersion = semverUtils.parse(currentVersion);
 DEBUG('parsedVersion: ' + parsedVersion);
